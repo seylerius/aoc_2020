@@ -8,10 +8,7 @@
 
 (def seat-grammar
   (insta/parser
-   {:seat (c/cat (c/nt :row) (c/nt :col))
-    :row (c/cat (c/nt :row-bit) (c/nt :row-bit) (c/nt :row-bit) (c/nt :row-bit)
-                (c/nt :row-bit) (c/nt :row-bit) (c/nt :row-bit))
-    :col (c/cat (c/nt :col-bit) (c/nt :col-bit) (c/nt :col-bit))
+   {:seat (c/plus (c/ord (c/nt :row-bit) (c/nt :col-bit)))
     :row-bit (c/ord (c/string "F") (c/string "B"))
     :col-bit (c/ord (c/string "L") (c/string "R"))}
    :start :seat))
@@ -19,9 +16,7 @@
 (def seat-transform
   {:row-bit (fn [bit] (if (= bit "F") "0" "1"))
    :col-bit (fn [bit] (if (= bit "L") "0" "1"))
-   :row (fn [& bits] (edn/read-string (apply str (cons "2r" bits))))
-   :col (fn [& bits] (edn/read-string (apply str (cons "2r" bits))))
-   :seat (fn [row col] (+ (* row 8) col))
+   :seat (fn [& bits] (edn/read-string (apply str (cons "2r" bits))))
    })
 
 (defn max-seat [seats]
