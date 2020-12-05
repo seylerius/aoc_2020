@@ -1,34 +1,26 @@
 (ns aoc-2020.day05
   (:require [clojure.java.io :as io]
-            [instaparse.core :as insta]
-            [instaparse.combinators :as c]
-            [clojure.edn :as edn]))
+            [clojure.edn :as edn]
+            [clojure.string :as str]))
 
 (def input (line-seq (io/reader (io/resource "input05"))))
 
-(def seat-grammar
-  (insta/parser
-   {:seat (c/plus (c/ord (c/nt :row-bit) (c/nt :col-bit)))
-    :row-bit (c/ord (c/string "F") (c/string "B"))
-    :col-bit (c/ord (c/string "L") (c/string "R"))}
-   :start :seat))
-
-(def seat-transform
-  {:row-bit (fn [bit] (if (= bit "F") "0" "1"))
-   :col-bit (fn [bit] (if (= bit "L") "0" "1"))
-   :seat (fn [& bits] (edn/read-string (apply str (cons "2r" bits))))
-   })
+(defn seat-to-number [seat]
+  (edn/read-string
+   (str "2r" (-> seat
+                 (str/replace "F" "0")
+                 (str/replace "L" "0")
+                 (str/replace "R" "1")
+                 (str/replace "B" "1")))))
 
 (defn max-seat [seats]
   (->> seats
-       (map seat-grammar)
-       (map #(insta/transform seat-transform %))
+       (map seat-to-number)
        (apply max)))
 
 (defn missing-seat [seats]
   (->> seats
-       (map seat-grammar)
-       (map #(insta/transform seat-transform %))
+       (map seat-to-number)
        sort
        (map-indexed (fn [i seat] [i seat]))
        (map (fn [[i seat]] [(+ 48 i) seat]))
