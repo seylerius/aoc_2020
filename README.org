@@ -1,0 +1,20 @@
+#+TITLE: 2020 Advent of Code Solutions
+#+AUTHOR: Sable Seyler
+
+This year is my first attempt at the Advent of Code,
+the delightful annual series of daily-released puzzles
+which people compete to solve every year.
+
+* Tools
+
++ Emacs (specifically [[https://github.com/hlissner/doom-emacs/][Doom Emacs]])
++ [[https://clojure.org][Clojure]] (with [[https://docs.cider.mx/][CIDER]] and [[https://github.com/clojure-emacs/clj-refactor.el][clj-refactor]])
++ [[https://github.com/engelberg/instaparse][Instaparse]] (combinators specifically)
++ [[https://nixos.org/][NixOS]] (with [[https://github.com/target/lorri][Lorri]] and [[https://direnv.net/][Direnv]])
+
+I am solving in Clojure, a functional language atop the JVM,
+because it is the language I'm most comfortable in.
+I had previously been attempting this using regular expressions,
+but the struggles with debugging them pushed me to
+convert my earlier solutions to use Instaparse instead,
+to allow for better readability and maintainability.
