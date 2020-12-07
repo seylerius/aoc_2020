@@ -50,28 +50,10 @@
        (remove nil?)
        set))
 
-;; (defn count-bags [rules bag]
-;;   (if (empty? (rules bag)) 1
-;;       (apply + (map #(count-bags rules %) (rules bag)))))
+(defn count-bags [rules bag]
+  (let [contents (into [] (rules bag))]
+    (if (empty? contents) 0
+        (apply + (map #(inc (count-bags rules %)) contents)))))
 
-(defn empty-bag-reducer [counts bag]
-  (if (empty? (counts bag))
-    (assoc counts bag 0)
-    (assoc counts bag (into [] (counts bag)))))
-
-(defn replace-empty-bag [counts bag]
-  (let [contents (counts bag)]
-    (if (number? contents) (inc contents) bag)))
-
-(defn full-bag-reducer [counts bag]
-  (let [contents (counts bag)]
-    (cond
-      (number? contents) counts
-      (not-any? keyword? contents) (assoc counts bag (apply + contents))
-      :else (assoc counts bag (map #(replace-empty-bag counts %) contents)))))
-
-(defn count-bags [rules]
-  (loop [bags (reduce empty-bag-reducer rules (keys rules))]
-    (if (some coll? (vals bags))
-      (recur (reduce full-bag-reducer bags (keys bags)))
-      bags)))
+(defn count-contents [rules bag]
+  (trampoline count-bags rules bag))
