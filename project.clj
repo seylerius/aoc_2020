@@ -6,4 +6,4 @@
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [instaparse "1.4.10"]
                  [org.clojure/math.numeric-tower "0.0.4"]]
-  :repl-options {:init-ns aoc-2020.day12})
+  :repl-options {:init-ns aoc-2020.day13})
